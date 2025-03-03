@@ -2,7 +2,7 @@
 
 Un proyecto para gestionar equipos de Pokémon.
 
-## Dependencias
+## Dependencias (Base)
 - [Next.js](https://nextjs.org/) - Framework de React para aplicaciones web.
 - [TailwindCSS](https://tailwindcss.com/) - Framework de estilos utilitarios.
 - [Zustand](https://github.com/pmndrs/zustand) - Gestión de estado simple y eficiente.
@@ -14,7 +14,7 @@ Un proyecto para gestionar equipos de Pokémon.
 - **[pnpm](https://pnpm.io/)** (Administrador de paquetes)
 
 
-## 🔧 Instalación y Configuración
+## Instalación y Configuración
 
 1. **Clonar el repositorio**  
    ```bash
@@ -27,7 +27,14 @@ Un proyecto para gestionar equipos de Pokémon.
    pnpm install
    ```
 
-3. **Iniciar el servidor**  
+3. **Configurar variables de entorno**  
+   ```bash
+   cp .env.example .env
+   ```
+
+   Ajusta las variables de entorno en el archivo `.env`
+
+4. **Iniciar el servidor**  
    - Modo desarrollo:
      ```bash
      pnpm dev
@@ -37,7 +44,7 @@ Un proyecto para gestionar equipos de Pokémon.
      pnpm start
      ```
 
-4. **Abrir en el navegador**  
+5. **Abrir en el navegador**  
    - Visita: [http://localhost:3000](http://localhost:3000)
 
 ## Comandos
@@ -54,7 +61,7 @@ Un proyecto para gestionar equipos de Pokémon.
 
 A project to manage Pokémon teams.
 
-## Dependencies
+## Dependencies (Base)
 - [Next.js](https://nextjs.org/) - React framework for web applications.
 - [TailwindCSS](https://tailwindcss.com/) - Utility-first CSS framework.
 - [Zustand](https://github.com/pmndrs/zustand) - Simple and efficient state management.
@@ -65,7 +72,7 @@ A project to manage Pokémon teams.
 - **[Node.js](https://nodejs.org/)** `>= 16`
 - **[pnpm](https://pnpm.io/)** (Package manager)
 
-## 🔧 Installation & Setup
+## Installation & Setup
 
 1. **Clone the repository**  
    ```bash
@@ -78,7 +85,14 @@ A project to manage Pokémon teams.
    pnpm install
    ```
 
-3. **Start the server**  
+3. **Configure environment variables**  
+   ```bash
+   cp .env.example .env
+   ```
+
+   Adjust the environment variables in the `.env` file
+
+4. **Start the server**  
    - Development mode:
      ```bash
      pnpm dev
@@ -88,7 +102,7 @@ A project to manage Pokémon teams.
      pnpm start
      ```
 
-4. **Open in browser**  
+5. **Open in browser**  
    - Visit: [http://localhost:3000](http://localhost:3000)
 
 ## Commands
