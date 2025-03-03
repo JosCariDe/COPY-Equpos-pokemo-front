@@ -1,36 +1,99 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Pokemon Servicio Equipos
 
-## Getting Started
+Un proyecto para gestionar equipos de Pokémon.
 
-First, run the development server:
+## Dependencias
+- [Next.js](https://nextjs.org/) - Framework de React para aplicaciones web.
+- [TailwindCSS](https://tailwindcss.com/) - Framework de estilos utilitarios.
+- [Zustand](https://github.com/pmndrs/zustand) - Gestión de estado simple y eficiente.
+- [TanStack Query (React Query)](https://tanstack.com/query/v4/) - Gestión avanzada de datos asíncronos.
+- [Axios](https://axios-http.com/) - Cliente HTTP para peticiones API.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## Requisitos
+- **[Node.js](https://nodejs.org/)** `>= 16`
+- **[pnpm](https://pnpm.io/)** (Administrador de paquetes)
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 🔧 Instalación y Configuración
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+1. **Clonar el repositorio**  
+   ```bash
+   git clone https://github.com/keiner5212/pokemon-servicio-equipos.git
+   ```
 
-## Learn More
+2. **Instalar dependencias**  
+   ```bash
+   cd pokemon-servicio-equipos
+   pnpm install
+   ```
 
-To learn more about Next.js, take a look at the following resources:
+3. **Iniciar el servidor**  
+   - Modo desarrollo:
+     ```bash
+     pnpm dev
+     ```
+   - Modo producción:
+     ```bash
+     pnpm start
+     ```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+4. **Abrir en el navegador**  
+   - Visita: [http://localhost:3000](http://localhost:3000)
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Comandos
 
-## Deploy on Vercel
+- `pnpm run dev` → Inicia el servidor en **modo desarrollo**  
+- `pnpm run start` → Ejecuta la aplicación en **modo producción**  
+- `pnpm run build` → Construye la aplicación para **producción**  
+- `pnpm run lint` → Ejecuta el **linter** para verificar errores de código  
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## **🌍 English Version**
+
+# Pokemon Team Service
+
+A project to manage Pokémon teams.
+
+## Dependencies
+- [Next.js](https://nextjs.org/) - React framework for web applications.
+- [TailwindCSS](https://tailwindcss.com/) - Utility-first CSS framework.
+- [Zustand](https://github.com/pmndrs/zustand) - Simple and efficient state management.
+- [TanStack Query (React Query)](https://tanstack.com/query/v4/) - Advanced async data fetching.
+- [Axios](https://axios-http.com/) - HTTP client for API requests.
+
+## Prerequisites
+- **[Node.js](https://nodejs.org/)** `>= 16`
+- **[pnpm](https://pnpm.io/)** (Package manager)
+
+## 🔧 Installation & Setup
+
+1. **Clone the repository**  
+   ```bash
+   git clone https://github.com/keiner5212/pokemon-servicio-equipos.git
+   ```
+
+2. **Install dependencies**  
+   ```bash
+   cd pokemon-servicio-equipos
+   pnpm install
+   ```
+
+3. **Start the server**  
+   - Development mode:
+     ```bash
+     pnpm dev
+     ```
+   - Production mode:
+     ```bash
+     pnpm start
+     ```
+
+4. **Open in browser**  
+   - Visit: [http://localhost:3000](http://localhost:3000)
+
+## Commands
+
+- `pnpm dev` → Start the server in **development mode**  
+- `pnpm start` → Run the app in **production mode**  
+- `pnpm build` → Build the app for **production**  
+- `pnpm lint` → Run the **linter** to check for code errors  

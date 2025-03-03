@@ -1,22 +1,21 @@
 "use client";
 
 import { PokemonService } from "@/modules/services/PokemonService";
-import { useEffect, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 
 export default function Home() {
-  const [pokemons, setPokemon] = useState<any>([]);
-  useEffect(() => {
-    const FetchPokemon = async () => {
-      const response = await PokemonService.getAll();
-      setPokemon(response.results);
-    }
-    FetchPokemon();
-  }, [])
-  
+  const { data: pokemons, isLoading, error } = useQuery({
+    queryKey: ["pokemons", "all"],
+    queryFn: PokemonService.getAll,
+  });
+
+  if (isLoading) return <p>Cargando...</p>;
+  if (error) return <p>Error: {error.message}</p>;
+
   return (
     <div>
-      {pokemons.map((pokemon: any) => (
-        <div key={pokemon.id}>{pokemon.name}</div>
+      {pokemons?.map((pokemon) => (
+        <div key={pokemon.name}>{pokemon.name}</div>
       ))}
     </div>
   );
