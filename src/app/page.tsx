@@ -1,33 +1,14 @@
-"use client";
+"use client"; 
 
-import Sidebar from "@/components/sidebard";
-import TableReact from "@/components/table";
-import { PokemonService } from "@/modules/services/PokemonService";
-import { useQuery } from "@tanstack/react-query";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 export default function Home() {
-  const {
-    data: pokemons,
-    isLoading,
-    error,
-  } = useQuery({
-    queryKey: ["pokemons", "all"],
-    queryFn: PokemonService.getAll,
-  });
+  const router = useRouter();
 
-  // const {results, next} = pokemons;
+  useEffect(() => {
+    router.push("/home"); 
+  }, []);
 
-  if (isLoading) return <p>Cargando...</p>;
-  if (error) return <p>Error: {error.message}</p>;
-
-  return (
-    <div>
-      <Sidebar />
-      <TableReact
-        tableName="lista de Pokemones"
-        data={pokemons.results}
-        nextUrl={pokemons.next}
-      />
-    </div>
-  );
+  return null;
 }

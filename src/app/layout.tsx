@@ -1,3 +1,4 @@
+
 import Layout from "@/components/mainContent";
 import QueryProvider from "@/components/providers/QueryProvider";
 import type { Metadata } from "next";

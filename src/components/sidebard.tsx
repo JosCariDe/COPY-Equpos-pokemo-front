@@ -1,10 +1,16 @@
+'use client'
+
+import { useRouter } from "next/navigation";
 
 interface SidebarProps {
   isOpen: boolean;
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  MenuOptions: { label: string; path: string }[];
 }
 
-const Sidebar = ({ isOpen, setIsOpen }: SidebarProps) => {
+const Sidebar = ({ isOpen, setIsOpen, MenuOptions }: SidebarProps) => {
+  const router = useRouter();
+
   return (
     <div className="relative">
       <div
@@ -14,10 +20,17 @@ const Sidebar = ({ isOpen, setIsOpen }: SidebarProps) => {
       >
         <h2 className="text-xl font-bold mb-4">Menú</h2>
         <ul className="space-y-4">
-          <li className="hover:text-gray-400 cursor-pointer">Inicio</li>
-          <li className="hover:text-gray-400 cursor-pointer">Pokémon</li>
-          <li className="hover:text-gray-400 cursor-pointer">Buscar</li>
-          <li className="hover:text-gray-400 cursor-pointer">Ajustes</li>
+          {MenuOptions.map(
+            (item: { label: string; path: string }, index: number) => (
+              <li
+                onClick={() => router.push(item.path)}
+                key={index}
+                className="hover:text-gray-400 cursor-pointer"
+              >
+                {item.label}
+              </li>
+            )
+          )}
         </ul>
       </div>
     </div>
