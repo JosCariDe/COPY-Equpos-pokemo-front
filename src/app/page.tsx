@@ -1,5 +1,6 @@
 "use client";
 
+import Sidebar from "@/components/sidebard";
 import TableReact from "@/components/table";
 import { PokemonService } from "@/modules/services/PokemonService";
 import { useQuery } from "@tanstack/react-query";
@@ -21,7 +22,12 @@ export default function Home() {
 
   return (
     <div>
-      <TableReact tableName="lista de Pokemones" data={pokemons.results} nextUrl={pokemons.next} />
+      <Sidebar />
+      <TableReact
+        tableName="lista de Pokemones"
+        data={pokemons.results}
+        nextUrl={pokemons.next}
+      />
     </div>
   );
 }

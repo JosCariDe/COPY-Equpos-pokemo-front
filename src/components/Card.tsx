@@ -1,10 +1,11 @@
 interface PokemonData {
   name: string;
   img: string;
-  imgClassName?: string; 
+  imgClassName?: string; // Permite personalizar el tamaño de la imagen
+  abilities?: string[]; // Hacer que abilities sea opcional
 }
 
-const Card = ({ name, img, imgClassName = "w-full" }: PokemonData) => {
+const Card = ({ name, img, imgClassName = "w-full", abilities = [] }: PokemonData) => {
   return (
     <div className="max-w-sm rounded overflow-hidden shadow-lg bg-white">
       <img
@@ -20,17 +21,18 @@ const Card = ({ name, img, imgClassName = "w-full" }: PokemonData) => {
           nihil.
         </p>
       </div>
-      <div className="px-6 pt-4 pb-2">
-        <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">
-          #photography
-        </span>
-        <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">
-          #travel
-        </span>
-        <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">
-          #winter
-        </span>
-      </div>
+      {abilities.length > 0 && (
+        <div className="px-6 pt-4 pb-2">
+          {abilities.map((ability, index) => (
+            <span
+              key={index}
+              className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2"
+            >
+              #{ability}
+            </span>
+          ))}
+        </div>
+      )}
     </div>
   );
 };

@@ -11,20 +11,18 @@ interface PokemonInfoProps {
 }
 
 const PokemonInfo = ({ pokemon, onClose }: PokemonInfoProps) => {
-  const {
-    data,
-    isLoading,
-    error,
-  } = useQuery({
+  const { data, isLoading, error } = useQuery({
     queryKey: ["pokemon", pokemon.name],
     queryFn: () => PokemonService.getSpecifict(pokemon.url),
   });
 
   if (isLoading) return <div className="text-white">Cargando...</div>;
-  if (error) return <p className="text-red-500">Error: {(error as Error).message}</p>;
+  if (error)
+    return <p className="text-red-500">Error: {(error as Error).message}</p>;
 
   const sprites = data?.sprites;
-  
+  const abilities = data?.abilities?.map((a: { ability: { name: string } }) => a.ability.name) || [];
+
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black/50 backdrop-blur-[2px]">
       <div className="bg-white p-6 rounded-lg shadow-md max-w-md w-full border border-gray-300 relative">
@@ -41,6 +39,7 @@ const PokemonInfo = ({ pokemon, onClose }: PokemonInfoProps) => {
           <Card
             name={pokemon.name}
             img={sprites?.other?.dream_world?.front_default}
+            abilities={abilities}
             imgClassName="w-50 h-50 object-contain"
           />
         </div>
