@@ -11,4 +11,13 @@ export class Pokemon {
         this.image = image;
         this.types = types;
     }
-}
+
+    static mapPokemonData = (data: any): Pokemon => {
+        return new Pokemon(
+            data.id,
+            data.name,
+            data.sprites.other["dream_world"].front_default,
+            data.types.map((type: any) => type.type.name)
+        );
+    };
+}  

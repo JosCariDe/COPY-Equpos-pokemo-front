@@ -6,7 +6,7 @@ import { useQuery } from "@tanstack/react-query";
 export default function Home() {
   const { data: pokemons, isLoading, error } = useQuery({
     queryKey: ["pokemons", "all"],
-    queryFn: PokemonService.getAll,
+    queryFn: () => PokemonService.getAll(5),
   });
 
   if (isLoading) return <p>Cargando...</p>;
@@ -15,7 +15,14 @@ export default function Home() {
   return (
     <div>
       {pokemons?.map((pokemon) => (
-        <div key={pokemon.name}>{pokemon.name}</div>
+        <div key={pokemon.id}>
+          {pokemon.id} {pokemon.name} {pokemon.image}
+          <div>
+            {pokemon.types.map((type: string, index: number) => (
+              <span key={index}>{type} </span>
+            ))}
+          </div>
+        </div>
       ))}
     </div>
   );
