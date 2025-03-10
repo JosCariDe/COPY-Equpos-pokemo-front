@@ -16,7 +16,7 @@ export default function Layout({
     { label: "Entrenadores", path: "/coaches" },
   ];
   return (
-    <div className="flex h-screen overflow-hidden">
+    <div className="flex h-screen">
       <Sidebar
         isOpen={isOpen}
         setIsOpen={setIsOpen}
@@ -24,12 +24,12 @@ export default function Layout({
       />
       <div
         className={`flex-1 flex flex-col transition-all duration-300 ${
-          isOpen ? "md:ml-64" : "ml-0"
+          !isOpen && "ml-0!"
         }`}
       >
         <Header isOpen={isOpen} setIsOpen={setIsOpen} />
         {/* Page Content */}
-        <div className="p-4 mt-16 overflow-auto h-full">{children}</div>
+        <div className="p-4! overflow-auto h-[calc(100vh-4rem)] w-full">{children}</div>
       </div>
     </div>
   );

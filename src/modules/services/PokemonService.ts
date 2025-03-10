@@ -7,7 +7,7 @@ export class PokemonService {
     static async getAll(limit?: number): Promise<Pokemon[]> {
         const url = Config.POKEMON_SERVICE_URL;
 
-        const response = await axios.get(url);
+        const response = await axios.get(url, { params: { limit } });
         return response.data;
     }
 
@@ -16,7 +16,7 @@ export class PokemonService {
         const response = await axios.get(url);
         return Pokemon.mapPokemonData(response.data);
     }
-    static async getSpecifict(url : string) : Promise<getPokemon>{
+    static async getSpecifict(url: string): Promise<getPokemon> {
         const response = await axios.get(url);
         return response.data
     }

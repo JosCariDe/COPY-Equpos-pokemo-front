@@ -1,7 +1,7 @@
 interface dataPagiantion {
   currentPage: number;
   totalPage: number;
-  changePage: void;
+  changePage: (value: number) => void;
 }
 const Pagination = ({ currentPage, totalPage, changePage }: dataPagiantion) => {
   return (
@@ -9,7 +9,7 @@ const Pagination = ({ currentPage, totalPage, changePage }: dataPagiantion) => {
       <button
         onClick={() => changePage(currentPage - 1)}
         disabled={currentPage === 0}
-        className="px-3 py-1 border rounded-md bg-gray-200 disabled:opacity-50"
+        className="px-3! py-1! border rounded-md bg-gray-500 disabled:opacity-50 text-[var(--foreground)]"
       >
         Anterior
       </button>
@@ -19,8 +19,8 @@ const Pagination = ({ currentPage, totalPage, changePage }: dataPagiantion) => {
           <button
             key={index}
             onClick={() => changePage(index)}
-            className={`px-3 py-1 border rounded-md ${
-              currentPage === index ? "bg-blue-500 text-white" : "bg-gray-200"
+            className={`px-3! py-1! border rounded-md ${
+              currentPage === index ? "bg-blue-500  text-[var(--foreground)]" : "bg-gray-200"
             }`}
           >
             {index + 1}
@@ -30,7 +30,7 @@ const Pagination = ({ currentPage, totalPage, changePage }: dataPagiantion) => {
       <button
         onClick={() => changePage(currentPage + 1)}
         disabled={currentPage === totalPage - 1}
-        className="px-3 py-1 border rounded-md bg-gray-200 disabled:opacity-50"
+        className="px-3! py-1! border rounded-md bg-gray-500 disabled:opacity-50 text-[var(--foreground)]"
       >
         Siguiente
       </button>

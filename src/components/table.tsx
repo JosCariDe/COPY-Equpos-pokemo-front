@@ -1,6 +1,5 @@
 "use client";
 
-import { Entrenador } from "@/app/coaches/interfaces";
 import { Result } from "@/modules/interfaces/pokemon";
 import { trainer } from "@/modules/interfaces/trainer";
 import { PokemonService } from "@/modules/services/PokemonService";
@@ -12,7 +11,7 @@ import PokemonDetails from "./pokemonDetail";
 
 interface dataTable {
   tableName: string;
-  data: (Result | trainer)[] | [];
+  data: (trainer | Result)[];
   nextUrl?: string;
   pagination?: boolean;
   showActionAdd?: boolean;
@@ -24,7 +23,6 @@ const TableReact = ({
   tableName,
   data,
   nextUrl,
-  pagination = true,
   showActionAdd = false,
   showActionShow = false,
   gestionTeams = false,
@@ -56,23 +54,23 @@ const TableReact = ({
     setTableData((prev) => [...prev, ...results]);
   };
 
-  const handleSelectPokemon = (item: Result | Entrenador) => {
+  const handleSelectPokemon = (item: Result | trainer) => {
     if ("name" in item) {
       setSelectedPokemon(item as Result);
     }
   };
 
   return (
-    <div className="min-h-screen h-full bg-white flex items-center justify-center pt-10 pb-14">
-      <div className="w-full max-w-4xl px-2">
+    <div className="h-full flex items-center justify-center">
+      <div className="w-full max-w-4xl px-2!">
         <h1 className="text-2xl font-medium">{tableName}</h1>
-        <div className="w-full overflow-x-auto mt-2">
+        <div className="w-full overflow-x-auto mt-2!">
           <table className="table-auto w-full text-left border">
             <thead className="bg-gray-200 text-gray-700 font-semibold">
               <tr>
                 {tableData.length > 0 &&
                   Object.keys(tableData[0]).map((key) => (
-                    <th key={key} className="py-3 px-3">
+                    <th key={key} className="py-3! px-3!">
                       {key}
                     </th>
                   ))}
@@ -85,16 +83,16 @@ const TableReact = ({
                   {Object.values(item).map((value, i) => (
                     <td
                       key={i}
-                      className="py-2 px-3 max-w-[200px] overflow-hidden text-ellipsis whitespace-nowrap"
+                      className="py-2! px-3! max-w-[200px] overflow-hidden text-ellipsis whitespace-nowrap"
                     >
                       <span className="truncate block">{value}</span>
                     </td>
                   ))}
-                  <td className="py-2 px-3 text-center flex justify-center gap-4">
+                  <td className="py-2! px-3! text-center flex justify-center gap-4">
                     {showActionShow && (
                       <button
                         onClick={() => handleSelectPokemon(item)}
-                        className="p-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
+                        className="p-2! bg-blue-500 text-white rounded-md hover:bg-blue-600"
                       >
                         <EyeIcon className="h-5 w-5" />
                       </button>
@@ -106,7 +104,11 @@ const TableReact = ({
                     )}
                     {gestionTeams && (
                       <button
-                        onClick={() => router.push(`/coaches/${item.id}`)}
+                        onClick={() => {
+                          if ("id" in item) {
+                            router.push(`/coaches/${(item as trainer).id}`);
+                          }
+                        }}
                         className="p-2 bg-green-500 text-white rounded-md hover:bg-green-600"
                       >
                         <UserGroupIcon className="h-5 w-5" />
@@ -129,7 +131,7 @@ const TableReact = ({
           showActionShow &&
           currentPage === totalPage - 1 &&
           nextPageUrl && (
-            <div className="flex justify-center mt-4">
+            <div className="flex justify-center mt-4!">
               <button
                 onClick={loadMoreData}
                 className="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600"

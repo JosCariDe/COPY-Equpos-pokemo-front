@@ -3,6 +3,7 @@ import Layout from "@/components/mainContent";
 import QueryProvider from "@/components/providers/QueryProvider";
 import type { Metadata } from "next";
 import "./globals.css";
+import "normalize.css";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -16,7 +17,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className="antialiased">
+      <body className="antialiased w-screen h-screen">
         <QueryProvider>
           <Layout> {children}</Layout>
         </QueryProvider>
