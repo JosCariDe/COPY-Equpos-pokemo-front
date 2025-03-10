@@ -9,6 +9,10 @@ import { useMemo, useState } from "react";
 import Pagination from "./pagination";
 import PokemonDetails from "./pokemonDetail";
 
+/*
+Recomendacion de Keiner: No tratar de hacer un componente tan generico, es confuso, es mejor crear 2 tablas, una para pokemones y otra para entrenadores, o almenos hacer que el componente sea personalizable desde fuera, no desde dentro (Principio de responsabilidad unica)
+ejemplo de una tabla totalmente generica e independiente: https://github.com/keiner5212/perfect-table-react */
+
 interface dataTable {
   tableName: string;
   data: (trainer | Result)[];
