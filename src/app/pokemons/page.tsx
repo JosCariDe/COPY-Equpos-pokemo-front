@@ -16,7 +16,7 @@ const Page = () => {
   if (isLoading) return <p>Cargando...</p>;
   if (error) return <p>Error: {error.message}</p>;
   return (
-    <div className="mt-5">
+    <div>
       <TableReact
         tableName="lista de Pokemones"
         data={pokemons.results}

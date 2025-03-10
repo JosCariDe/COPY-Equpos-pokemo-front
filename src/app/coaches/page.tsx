@@ -1,4 +1,7 @@
+"use client"
 import TableReact from "@/components/table";
+import { TrainerServices } from "@/modules/services/TrainerServices";
+import { useQuery } from "@tanstack/react-query";
 import { Entrenador } from "./interfaces";
 
 const entrenadores: Entrenador[] = [
@@ -18,10 +21,21 @@ const entrenadores: Entrenador[] = [
 ];
 
 const page = () => {
+  const {
+    data: trainer,
+    isLoading,
+    error,
+  } = useQuery({
+    queryKey: ["trainer", "all"],
+    queryFn: TrainerServices.getAll,
+  });
+
+  if (isLoading) return <div>cargando...</div>;
+
   return (
     <div className="mt-8">
       <TableReact
-        data={entrenadores}
+        data={trainer || []}
         tableName="Entrenadores"
         gestionTeams={true}
       />

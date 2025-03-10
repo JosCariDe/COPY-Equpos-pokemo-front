@@ -1,6 +1,7 @@
 export const dataTeams = [
     {
         "id": 1,
+        "enterenadorId": 1,
         "nombre": "Ash Ketchum",
         "nivel": 50,
         "cantidadEquipos": 3,
@@ -45,6 +46,7 @@ export const dataTeams = [
     },
     {
         "id": 2,
+        "enterenadorId": 2,
         "nombre": "Misty",
         "nivel": 45,
         "cantidadEquipos": 3,
@@ -89,6 +91,7 @@ export const dataTeams = [
     },
     {
         "id": 3,
+        "enterenadorId": 3,
         "nombre": "Brock",
         "nivel": 48,
         "cantidadEquipos": 3,

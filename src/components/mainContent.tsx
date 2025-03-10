@@ -9,7 +9,7 @@ export default function Layout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const [isOpen, setIsOpen] = useState<boolean>(true);
+  const [isOpen, setIsOpen] = useState<boolean>(false);
   const MenuOptions = [
     { label: "Inicio", path: "/home" },
     // { label: "Pokémon", path: "/pokemons" },

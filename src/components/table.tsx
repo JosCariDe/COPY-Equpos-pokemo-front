@@ -2,6 +2,7 @@
 
 import { Entrenador } from "@/app/coaches/interfaces";
 import { Result } from "@/modules/interfaces/pokemon";
+import { trainer } from "@/modules/interfaces/trainer";
 import { PokemonService } from "@/modules/services/PokemonService";
 import { EyeIcon, PlusIcon, UserGroupIcon } from "@heroicons/react/16/solid";
 import { useRouter } from "next/navigation";
@@ -11,7 +12,7 @@ import PokemonDetails from "./pokemonDetail";
 
 interface dataTable {
   tableName: string;
-  data: (Result | Entrenador)[];
+  data: (Result | trainer)[] | [];
   nextUrl?: string;
   pagination?: boolean;
   showActionAdd?: boolean;
