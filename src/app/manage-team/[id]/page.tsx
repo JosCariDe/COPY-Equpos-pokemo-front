@@ -47,12 +47,7 @@ const Page = () => {
 
     const onChangePokemon = async () => {
         if (!team || !selectedPokemon) return;
-
-        if (team.pokemonesIds.includes(selectedPokemon.id)) {
-            team.pokemonesIds = team.pokemonesIds.filter((id) => id !== selectedPokemon.id);
-        } else {
-            await TeamsServices.updateTeam(team.id, { nombre: team.nombre, pokemonIds: [...team.pokemonesIds, selectedPokemon.id] });
-        }
+        await TeamsServices.updateTeam(team.id, { nombre: team.nombre, pokemonIds: [...team.pokemonesIds, selectedPokemon.id] });
     };
 
     const TeamMutation = useMutation({
@@ -62,6 +57,19 @@ const Page = () => {
             setSelectedPokemon(null);
         },
     });
+
+    const handleDeletePokemon = async (pokemonId: number) => {
+        if (!team) return;
+
+        //que solo se elimine el primer pokemon con esa id (porque puede repetirse)
+        const indexToRemove = team.pokemonesIds.indexOf(pokemonId);
+        if (indexToRemove !== -1) {
+            const newPokemons = [...team.pokemonesIds];
+            newPokemons.splice(indexToRemove, 1);
+            await TeamsServices.updateTeam(team.id, { nombre: team.nombre, pokemonIds: newPokemons });
+            queryClient.invalidateQueries({ queryKey: ["pok-team", teamId] });
+        }
+    };
 
     if (isLoadingAllPokemons || isLoadingTeam) return <LoaderScreen />;
 
@@ -96,14 +104,18 @@ const Page = () => {
                         const temp = (pokemonsOfTeam || [])[index];
                         if (!temp) {
                             return (
-                                <EmptyCard key={index}
+                                <EmptyCard key={index + "emptycard"}
                                     onClick={() => { setShowPokemons(true) }}>
                                 </EmptyCard>
                             );
                         } else {
                             return (
                                 <HoloCard
-                                    key={temp.id}
+                                    showTrashIcon={true}
+                                    onDelete={(pokemon: Pokemon) => {
+                                        handleDeletePokemon(pokemon.id);
+                                    }}
+                                    key={temp.id + "card" + index}
                                     pokemon={temp}
                                 />
                             );
@@ -125,6 +137,7 @@ const Page = () => {
                                 setShowPokemons(false);
                                 TeamMutation.mutate();
                             }}
+                            showTrashIcon={false}
                             key={pokemon.id}
                             pokemon={pokemon}
                         />

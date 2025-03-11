@@ -4,8 +4,15 @@ import { useEffect, useRef } from "react";
 import "./Card.css";
 import { Pokemon } from "@/modules/types/Pokemon";
 import Image from "next/image";
+import { TrashIcon } from "@heroicons/react/16/solid";
+interface HoloCardProps {
+  pokemon: Pokemon;
+  onClick?: (pokemon: Pokemon) => void;
+  showTrashIcon: boolean
+  onDelete?: (pokemon: Pokemon) => void
+}
 
-const HoloCard = ({ pokemon, onClick }: { pokemon: Pokemon, onClick?: (pokemon: Pokemon) => void }) => {
+const HoloCard: React.FC<HoloCardProps> = ({ pokemon, onClick, showTrashIcon, onDelete }) => {
   const cardRef = useRef<HTMLDivElement>(null);
   const bounds = useRef<DOMRect>(null);
   const isHovering = useRef(false);
@@ -77,6 +84,11 @@ const HoloCard = ({ pokemon, onClick }: { pokemon: Pokemon, onClick?: (pokemon: 
     <div className="card-container" onClick={() => onClick?.(pokemon)}>
       <div className="card" ref={cardRef}>
         <div className="card-content">
+          {showTrashIcon &&
+            <button title="Eliminar Pokemon" onClick={() => onDelete?.(pokemon)} className="text-red-500 hover:text-red-700 transition-all cursor-pointer absolute top-2 right-2">
+              <TrashIcon className="h-5 w-5" />
+            </button>
+          }
           <div className="p-2">
             <div className="flex justify-between items-center">
               <h2 className="text-2xl font-bold">{pokemon.nombre}</h2>

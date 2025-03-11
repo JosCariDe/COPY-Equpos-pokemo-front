@@ -1,10 +1,11 @@
 "use client";
 import Button from "@/components/buttons/General";
 import LoaderScreen from "@/components/Loaders/LoaderScreen";
+import Modal from "@/components/modal/Modal";
 import { EquipoEntrenadorService } from "@/modules/services/TeamCoachService";
 import { TeamsServices } from "@/modules/services/TeamsService";
 import { TeamCoach } from "@/modules/types/TeamCoach";
-import { ArrowRightIcon, XMarkIcon } from "@heroicons/react/16/solid";
+import { ArrowRightIcon } from "@heroicons/react/16/solid";
 import { TrashIcon } from "@heroicons/react/16/solid";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useParams, useRouter } from "next/navigation";
@@ -124,54 +125,38 @@ export default function EntrenadorDetalle() {
         )}
       </div>
 
-      {/* 🟢 Modal de CREAR EQUIPO */}
-      {createTeamModal && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black/50 backdrop-blur-[2px] z-50">
-          <div className="bg-[var(--background)] p-6 rounded-lg shadow-lg max-w-md w-full relative">
-            <button
-              className="absolute top-4 right-4 text-gray-600 hover:text-gray-900 bg-gray-200 rounded-full p-2 cursor-pointer"
-              onClick={() => setCreateTeam(false)}
-            >
-              <XMarkIcon className="h-6 w-6" />
-            </button>
-
-            {/* Título */}
-            <h2 className="text-xl font-bold text-[var(--foreground)] text-center">
-              Crear Nuevo Equipo
-            </h2>
-
-            {/* Formulario */}
-            <form
-              onSubmit={(e) => {
-                e.preventDefault();
-                createTeamMutation.mutate();
-              }}
-              className="mt-4 space-y-4"
-            >
-              {/* Input para el nombre del equipo */}
-              <div>
-                <label className="block text-[var(--foreground)] font-medium">
-                  Nombre del equipo:
-                </label>
-                <input
-                  type="text"
-                  value={nombreEquipo}
-                  onChange={(e) => setNombreEquipo(e.target.value)}
-                  className="w-full p-2 border border-gray-300 rounded-md"
-                  required
-                />
-              </div>
-
-              {/* Botón para guardar */}
-              <Button
-                type="submit"
-              >
-                Guardar Equipo
-              </Button>
-            </form>
+      <Modal
+        isOpen={createTeamModal}
+        title="Crear Nuevo Equipo"
+        onClose={() => setCreateTeam(false)}
+      >
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            createTeamMutation.mutate();
+          }}
+          className="mt-4 space-y-4"
+        >
+          <div>
+            <label className="block text-[var(--foreground)] font-medium">
+              Nombre del equipo:
+            </label>
+            <input
+              type="text"
+              value={nombreEquipo}
+              onChange={(e) => setNombreEquipo(e.target.value)}
+              className="w-full p-2 border border-gray-300 rounded-md"
+              required
+            />
           </div>
-        </div>
-      )}
+
+          <Button
+            type="submit"
+          >
+            Guardar Equipo
+          </Button>
+        </form>
+      </Modal>
 
     </div>
   );
