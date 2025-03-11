@@ -9,18 +9,19 @@ const Page = () => {
     isLoading,
     error,
   } = useQuery({
+    queryFn: PokemonService.getAll(),
     queryKey: ["pokemons", "all"],
-    queryFn: PokemonService.getAll,
+    retry: 2,
   });
 
   if (isLoading) return <p>Cargando...</p>;
   if (error) return <p>Error: {error.message}</p>;
   return (
     <div>
+      {typeof pokemons}
       <TableReact
         tableName="lista de Pokemones"
-        data={pokemons.results}
-        nextUrl={pokemons.next}
+        data={pokemons}
         showActionAdd={true}
         showActionShow={true}
       />

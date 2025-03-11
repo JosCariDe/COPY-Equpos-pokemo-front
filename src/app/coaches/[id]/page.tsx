@@ -1,14 +1,11 @@
 "use client";
 import Page from "@/app/pokemons/page";
 import { TeamsServices } from "@/modules/services/TeamsServices";
-import { useQuery } from "@tanstack/react-query";
-import { useEffect, useState } from "react";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useParams } from "next/navigation";
+import { useState } from "react";
 
-export default function EntrenadorDetalle({
-  params,
-}: {
-  params: Promise<{ id: string }>;
-}) {
+export default function EntrenadorDetalle() {
   const [showInputAddPokemon, setShowInputAddPokemon] = useState(false);
   const [equipoSeleccionado, setEquipoSeleccionado] = useState<number | null>(
     null
@@ -16,13 +13,9 @@ export default function EntrenadorDetalle({
   const [mostrarModal, setMostrarModal] = useState(false);
   const [equipoExpandido, setEquipoExpandido] = useState<number | null>(null);
   const [createTeamModal, setCreateTeam] = useState(false);
-  const [entrenadorId, setEntrenadorId] = useState<number | null>(null);
-
-  useEffect(() => {
-    params.then(({ id }) => {
-      setEntrenadorId(parseInt(id));
-    });
-  }, [params]);
+  const [nombreEquipo, setNombreEquipo] = useState("");
+  const { id: entrenadorId } = useParams();
+  const queryClient = useQueryClient();
 
   const {
     data: teams,
@@ -30,31 +23,28 @@ export default function EntrenadorDetalle({
     error,
   } = useQuery({
     queryKey: ["Teams", entrenadorId],
-    queryFn: () => TeamsServices.getOne(entrenadorId!),
-    enabled: entrenadorId !== null,
+    queryFn: () => TeamsServices.getOne(parseInt(entrenadorId as string)),
   });
 
-  const createTeamRequest = (event: any) => {
-    const name = event.target.elements.nombre.value;
-    event.preventDefault();
-    if (!entrenadorId) return;
-    TeamsServices.createTeam(
-      {
-        nombre: name,
-        pokemonIds: [],
-      },
-      entrenadorId
-    );
-  };
-  if (isLoading) return <div>Cargando equipos...</div>;
-  if (error) return <div>Ocurrió un error al obtener los equipos.</div>;
+  const createTeamMutation = useMutation({
+    mutationFn: () =>
+      TeamsServices.createTeam(
+        { nombre: nombreEquipo, pokemonIds: [] },
+        parseInt(entrenadorId as string)
+      ),
+    onSuccess: () => {
+      queryClient.invalidateQueries(["Teams"]);
+      setNombreEquipo("");
+      setCreateTeam(false);
+    },
+  });
 
   return (
     <div className="min-h-screen flex flex-col items-center p-6 bg-gray-100">
       <div className="bg-white p-6 rounded-lg shadow-md max-w-3xl w-full">
         <div className="flex flex-row flex-wrap justify-around">
           <button
-            onClick={() => setCreateTeam((prev) => !prev)}
+            onClick={() => setCreateTeam(true)}
             className="mt-4 px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 transition-all"
           >
             Crear nuevo equipo
@@ -67,33 +57,30 @@ export default function EntrenadorDetalle({
           </button>
         </div>
 
-        {showInputAddPokemon && (
-          <div>
-            <h2 className="text-xl font-bold mt-6 text-gray-800">
-              Selecciona un equipo
-            </h2>
-            {/* <select
-              onChange={(e) => setEquipoSeleccionado(Number(e.target.value))}
-              className="mt-2 p-2 border border-gray-300 rounded-md w-full"
-            >
-              <option value="">Selecciona un equipo</option>
-            </select> */}
+        {showInputAddPokemon ? <div className="mt-3 items-start">
+          <form className="max-w-sm mx-auto">
+            <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+              Seleccione un equipo
+            </label>
 
-            {/* {equipoSeleccionado ? (
-              <button
-                onClick={() => setMostrarModal(true)}
-                className="mt-4 px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 transition-all"
-              >
-                Añadir Pokémon
-              </button>
-            ) : (
-              <p>Si deseas añadir un Pokémon, selecciona un equipo</p>
-            )} */}
-          </div>
-        )}
+            <select
+              id="countries"
+              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            >
+              <option disabled selected>
+                Choose a country
+              </option>
+            </select>
+          </form>
+        </div> : <div></div>}
+        
 
         <h2 className="text-xl font-bold mt-6 text-gray-800">Equipos</h2>
-        {teams?.equipos && teams.equipos.length > 0 ? (
+        {isLoading ? (
+          <p>Cargando equipos...</p>
+        ) : error ? (
+          <p className="text-red-500">Error al cargar los equipos.</p>
+        ) : teams?.equipos?.length > 0 ? (
           teams.equipos.map((equipo: any) => (
             <div
               key={equipo.id}
@@ -153,22 +140,7 @@ export default function EntrenadorDetalle({
         )}
       </div>
 
-      {mostrarModal && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black/50 backdrop-blur-[2px] z-50">
-          <div className="bg-white p-6 rounded-lg shadow-lg max-w-3xl w-full relative">
-            <button
-              className="absolute top-4 right-4 text-gray-600 hover:text-gray-900 bg-gray-200 rounded-full p-2"
-              onClick={() => setMostrarModal(false)}
-            >
-              ✖
-            </button>
-            <div className="overflow-hidden max-h-[85vh]">
-              <Page />
-            </div>
-          </div>
-        </div>
-      )}
-
+      {/* 🟢 Modal de CREAR EQUIPO */}
       {createTeamModal && (
         <div className="fixed inset-0 flex items-center justify-center bg-black/50 backdrop-blur-[2px] z-50">
           <div className="bg-white p-6 rounded-lg shadow-lg max-w-md w-full relative">
@@ -186,7 +158,13 @@ export default function EntrenadorDetalle({
             </h2>
 
             {/* Formulario */}
-            <form onSubmit={createTeamRequest} className="mt-4 space-y-4">
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                createTeamMutation.mutate();
+              }}
+              className="mt-4 space-y-4"
+            >
               {/* Input para el nombre del equipo */}
               <div>
                 <label className="block text-gray-700 font-medium">
@@ -194,7 +172,8 @@ export default function EntrenadorDetalle({
                 </label>
                 <input
                   type="text"
-                  name="nombre"
+                  value={nombreEquipo}
+                  onChange={(e) => setNombreEquipo(e.target.value)}
                   className="w-full p-2 border border-gray-300 rounded-md"
                   required
                 />
@@ -208,6 +187,23 @@ export default function EntrenadorDetalle({
                 Guardar Equipo
               </button>
             </form>
+          </div>
+        </div>
+      )}
+
+      {/* 🟢 Modal para Añadir Pokémon */}
+      {mostrarModal && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black/50 backdrop-blur-[2px] z-50">
+          <div className="bg-white p-6 rounded-lg shadow-lg max-w-3xl w-full relative">
+            <button
+              className="absolute top-4 right-4 text-gray-600 hover:text-gray-900 bg-gray-200 rounded-full p-2"
+              onClick={() => setMostrarModal(false)}
+            >
+              ✖
+            </button>
+            <div className="overflow-hidden max-h-[85vh]">
+              <Page />
+            </div>
           </div>
         </div>
       )}

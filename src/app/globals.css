@@ -5,7 +5,6 @@
   --font-mono: var(--font-geist-mono);
 }
 
-
 :root {
   --background: #ffffff;
   --foreground: #171717;
@@ -24,9 +23,12 @@ body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
-
 * {
   box-sizing: border-box;
+}
+
+html,
+body {
   margin: 0;
   padding: 0;
 }
