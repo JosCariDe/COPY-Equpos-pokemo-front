@@ -1,40 +1,126 @@
-interface PokemonData {
-  name: string;
-  img: string;
-  imgClassName?: string; // Permite personalizar el tamaño de la imagen
-  abilities?: string[]; // Hacer que abilities sea opcional
-}
+"use client";
 
-const Card = ({ name, img, imgClassName = "w-full", abilities = [] }: PokemonData) => {
+import { useEffect, useRef, useState } from "react";
+import "./Card.css";
+import { Pokemon } from "@/modules/types/Pokemon";
+import { generateRandomColor } from "@/utils/Colors";
+import Image from "next/image";
+
+const HoloCard = ({ pokemon }: { pokemon: Pokemon }) => {
+  const cardRef = useRef<HTMLDivElement>(null);
+  const bounds = useRef<DOMRect>(null);
+  const isHovering = useRef(false);
+  const [borderColor, setBorderColor] = useState<string>("#ffffff");
+
+  useEffect(() => {
+    setBorderColor(generateRandomColor({ type: "pastel" }));
+  }, []);
+
+  useEffect(() => {
+    const $card = cardRef.current;
+    if (!$card) return;
+
+    const rotateToMouse = (e: MouseEvent) => {
+      if (!bounds.current) return;
+
+      const mouseX = e.clientX;
+      const mouseY = e.clientY;
+      const leftX = mouseX - bounds.current.x;
+      const topY = mouseY - bounds.current.y;
+      const center = {
+        x: leftX - bounds.current.width / 2,
+        y: topY - bounds.current.height / 2
+      };
+      const distance = Math.sqrt(center.x ** 2 + center.y ** 2);
+
+      $card.style.transform = `
+        scale3d(1.07, 1.07, 1.07)
+        rotate3d(
+          ${center.y / 100},
+          ${-center.x / 100},
+          0,
+          ${Math.log(distance) * 2}deg
+        )
+      `;
+
+      const glow = $card.querySelector('.glow') as HTMLElement;
+      glow.style.backgroundImage = `
+        radial-gradient(
+          circle at
+          ${center.x * 2 + bounds.current.width / 2}px
+          ${center.y * 2 + bounds.current.height / 2}px,
+          #ffffff55,
+          #0000000f
+        )
+      `;
+    };
+
+    const handleMouseEnter = () => {
+      bounds.current = $card.getBoundingClientRect();
+      isHovering.current = true;
+      document.addEventListener("mousemove", rotateToMouse);
+    };
+
+    const handleMouseLeave = () => {
+      isHovering.current = false;
+      document.removeEventListener("mousemove", rotateToMouse);
+      $card.style.transform = '';
+      ($card.querySelector('.glow') as HTMLElement).style.backgroundImage = '';
+    };
+
+    $card.addEventListener('mouseenter', handleMouseEnter);
+    $card.addEventListener('mouseleave', handleMouseLeave);
+
+    return () => {
+      $card.removeEventListener('mouseenter', handleMouseEnter);
+      $card.removeEventListener('mouseleave', handleMouseLeave);
+      document.removeEventListener("mousemove", rotateToMouse);
+    };
+  }, []);
+
   return (
-    <div className="max-w-sm rounded overflow-hidden shadow-lg bg-white">
-      <img
-        className={`${imgClassName} object-contain mx-auto`}
-        src={img}
-        alt={name}
-      />
-      <div className="px-6 py-4">
-        <div className="font-bold text-xl mb-2">{name}</div>
-        <p className="text-gray-700 text-base">
-          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatibus
-          quia, nulla! Maiores et perferendis eaque, exercitationem praesentium
-          nihil.
-        </p>
-      </div>
-      {abilities.length > 0 && (
-        <div className="px-6 pt-4 pb-2">
-          {abilities.map((ability, index) => (
-            <span
-              key={index}
-              className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2"
-            >
-              #{ability}
-            </span>
-          ))}
+    <div className="card-container">
+      <div className="card" ref={cardRef}>
+        <div className="card-content"
+          style={{
+            borderWidth: 10,
+            borderColor: borderColor,
+          }}>
+          <div className="p-4">
+            <div className="flex justify-between items-center">
+              <h2 className="text-2xl font-bold">{pokemon.nombre}</h2>
+              <span className="text-lg">HP {pokemon.estadisticas.hp}</span>
+            </div>
+            <div className="mt-2">
+              <Image
+                src={pokemon.sprite}
+                alt={pokemon.nombre}
+                width={128}
+                height={128}
+                className="mx-auto"
+              />
+            </div>
+            <div className="mt-4">
+              <p className="text-sm"><strong>Tipos:</strong> {pokemon.tipos.join(", ")}</p>
+              <p className="text-sm"><strong>Nivel:</strong> {pokemon.nivel}</p>
+              <p className="text-sm"><strong>Ataque:</strong> {pokemon.estadisticas.ataque}</p>
+              <p className="text-sm"><strong>Defensa:</strong> {pokemon.estadisticas.defensa}</p>
+              <p className="text-sm"><strong>Velocidad:</strong> {pokemon.estadisticas.velocidad}</p>
+            </div>
+            <div className="mt-4">
+              <h3 className="text-lg font-semibold">Movimientos:</h3>
+              <ul className="list-disc list-inside">
+                {pokemon.movimientos.map((movimiento, index) => (
+                  <li key={index} className="text-sm">{movimiento}</li>
+                ))}
+              </ul>
+            </div>
+          </div>
         </div>
-      )}
+        <div className="glow" />
+      </div>
     </div>
   );
 };
 
-export default Card;
+export default HoloCard;
