@@ -5,7 +5,7 @@ import "./Card.css";
 import { Pokemon } from "@/modules/types/Pokemon";
 import Image from "next/image";
 
-const HoloCard = ({ pokemon }: { pokemon: Pokemon }) => {
+const HoloCard = ({ pokemon, onClick }: { pokemon: Pokemon, onClick?: (pokemon: Pokemon) => void }) => {
   const cardRef = useRef<HTMLDivElement>(null);
   const bounds = useRef<DOMRect>(null);
   const isHovering = useRef(false);
@@ -74,7 +74,7 @@ const HoloCard = ({ pokemon }: { pokemon: Pokemon }) => {
   }, []);
 
   return (
-    <div className="card-container">
+    <div className="card-container" onClick={() => onClick?.(pokemon)}>
       <div className="card" ref={cardRef}>
         <div className="card-content">
           <div className="p-2">

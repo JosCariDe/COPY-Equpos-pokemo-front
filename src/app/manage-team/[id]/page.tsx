@@ -6,14 +6,17 @@ import LoaderScreen from "@/components/Loaders/LoaderScreen";
 import Modal from "@/components/modal/Modal";
 import { PokemonService } from "@/modules/services/PokemonService";
 import { TeamsServices } from "@/modules/services/TeamsService";
+import { Pokemon } from "@/modules/types/Pokemon";
 import { Team } from "@/modules/types/Team";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useParams } from "next/navigation";
 import { useState } from "react";
 
 const Page = () => {
     const { data: pokemons, isLoading: isLoadingAllPokemons, error: errorAllPokemons } = usePokemons();
     const [showPokemons, setShowPokemons] = useState(false);
+    const [selectedPokemon, setSelectedPokemon] = useState<Pokemon | null>(null);
+    const queryClient = useQueryClient();
     const { id: teamId } = useParams();
 
     const getAllPokemons = async (team: Team | undefined) => {
@@ -37,9 +40,27 @@ const Page = () => {
         isLoading: isLoadingPokemons,
         error: errorLoadingPokemons,
     } = useQuery({
-        queryKey: ["Pokemons", teamId],
+        queryKey: ["Pokemons", teamId, team?.pokemonesIds],
         queryFn: () => getAllPokemons(team),
         enabled: !!team,
+    });
+
+    const onChangePokemon = async () => {
+        if (!team || !selectedPokemon) return;
+
+        if (team.pokemonesIds.includes(selectedPokemon.id)) {
+            team.pokemonesIds = team.pokemonesIds.filter((id) => id !== selectedPokemon.id);
+        } else {
+            await TeamsServices.updateTeam(team.id, { nombre: team.nombre, pokemonIds: [...team.pokemonesIds, selectedPokemon.id] });
+        }
+    };
+
+    const TeamMutation = useMutation({
+        mutationFn: onChangePokemon,
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ["pok-team", teamId] });
+            setSelectedPokemon(null);
+        },
     });
 
     if (isLoadingAllPokemons || isLoadingTeam) return <LoaderScreen />;
@@ -67,7 +88,7 @@ const Page = () => {
             <h1>Equipo: {team?.nombre}</h1>
             <h2>Pokemones:</h2>
             <br />
-            <section className="flex flex-wrap flex-row gap-4">
+            <section className="flex flex-wrap flex-row">
                 {isLoadingPokemons ? (
                     <LoaderScreen />
                 ) : (
@@ -99,6 +120,11 @@ const Page = () => {
                 <div className="flex flex-wrap flex-row gap-1 overflow-y-auto h-[calc(100vh-12rem)]">
                     {pokemons?.map((pokemon) => (
                         <HoloCard
+                            onClick={(pokemon: Pokemon) => {
+                                setSelectedPokemon(pokemon);
+                                setShowPokemons(false);
+                                TeamMutation.mutate();
+                            }}
                             key={pokemon.id}
                             pokemon={pokemon}
                         />
