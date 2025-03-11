@@ -1,3 +1,5 @@
+import Button from "./buttons/General";
+
 interface dataPagiantion {
   currentPage: number;
   totalPage: number;
@@ -5,35 +7,34 @@ interface dataPagiantion {
 }
 const Pagination = ({ currentPage, totalPage, changePage }: dataPagiantion) => {
   return (
-    <div>
-      <button
+    <div className="flex items-center flex-row my-2">
+      <Button
         onClick={() => changePage(currentPage - 1)}
         disabled={currentPage === 0}
-        className="px-3! py-1! border rounded-md bg-gray-500 disabled:opacity-50 text-[var(--foreground)]"
       >
         Anterior
-      </button>
-      {[...Array(totalPage)].map((_, index) =>
-        index >= Math.max(0, currentPage - 2) &&
-        index <= Math.min(totalPage - 1, currentPage + 2) ? (
-          <button
-            key={index}
-            onClick={() => changePage(index)}
-            className={`px-3! py-1! border rounded-md ${
-              currentPage === index ? "bg-blue-500  text-[var(--foreground)]" : "bg-gray-200"
-            }`}
-          >
-            {index + 1}
-          </button>
-        ) : null
-      )}
-      <button
+      </Button>
+      <div className="mx-2">
+        {[...Array(totalPage)].map((_, index) =>
+          index >= Math.max(0, currentPage - 2) &&
+            index <= Math.min(totalPage - 1, currentPage + 2) ? (
+            <Button
+              key={index}
+              onClick={() => changePage(index)}
+              className={`px-3! py-2 border rounded-md ${currentPage === index ? "bg-blue-500  text-[var(--foreground)]" : "bg-gray-200"
+                }`}
+            >
+              {index + 1}
+            </Button>
+          ) : null
+        )}
+      </div>
+      <Button
         onClick={() => changePage(currentPage + 1)}
         disabled={currentPage === totalPage - 1}
-        className="px-3! py-1! border rounded-md bg-gray-500 disabled:opacity-50 text-[var(--foreground)]"
       >
         Siguiente
-      </button>
+      </Button>
     </div>
   );
 };

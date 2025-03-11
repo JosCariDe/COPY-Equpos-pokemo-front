@@ -3,6 +3,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import Pagination from "./pagination";
 import { Entrenador } from "@/modules/types/Coach";
+import Button from "./buttons/General";
 
 interface dataTable {
   data: Entrenador[];
@@ -36,7 +37,7 @@ const TableReact = ({
         <h1 className="text-2xl font-medium">Entrenadores</h1>
         <div className="w-full overflow-x-auto mt-2!">
           <table className="table-auto w-full text-left border">
-            <thead className="bg-gray-200 text-gray-700 font-semibold">
+            <thead className="bg-[var(--background2)] text-[var(--foreground)] font-semibold">
               <tr>
                 {headers.map((h) => (
                   <th key={h.access} className="py-3! px-3!">
@@ -58,15 +59,14 @@ const TableReact = ({
                     </td>
                   ))}
                   <td className="py-2! px-3! text-center flex justify-center gap-4">
-                    <button
+                    <Button
                       title="Ver Entrenador"
                       onClick={() => {
                         router.push(`/coaches/${item.id}`);
                       }}
-                      className="p-2 bg-green-500 text-white rounded-md hover:bg-green-600 cursor-pointer"
                     >
                       <UserGroupIcon className="h-5 w-5" />
-                    </button>
+                    </Button>
                   </td>
                 </tr>
               ))}

@@ -1,8 +1,11 @@
 "use client";
+import Button from "@/components/buttons/General";
 import LoaderScreen from "@/components/Loaders/LoaderScreen";
 import { EquipoEntrenadorService } from "@/modules/services/TeamCoachService";
 import { TeamsServices } from "@/modules/services/TeamsService";
 import { TeamCoach } from "@/modules/types/TeamCoach";
+import { ArrowRightIcon, XMarkIcon } from "@heroicons/react/16/solid";
+import { TrashIcon } from "@heroicons/react/16/solid";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -72,23 +75,26 @@ export default function EntrenadorDetalle() {
     },
   });
 
+  const handleDeleteTeam = async (equipoId: string) => {
+    await TeamsServices.deleteTeam(equipoId);
+    queryClient.invalidateQueries({ queryKey: ["teamCoach", entrenadorId] });
+  };
+
   if (isLoadingEquipoEntrenador || isLoadingTeams) return <LoaderScreen />;
 
   return (
     <div className="h-full flex flex-col items-center p-6 text-[var(--foreground)]">
       <div className="p-6 rounded-lg shadow-md max-w-3xl w-full">
         <div className="flex flex-row flex-wrap justify-around">
-          <button
+          <Button
             onClick={() => setCreateTeam(true)}
-            className="mt-4 px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 transition-all"
           >
             Crear nuevo equipo
-          </button>
-          <button
-            className="mt-4 px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 transition-all"
+          </Button>
+          <Button
           >
             Añadir Pokémon
-          </button>
+          </Button>
         </div>
 
 
@@ -101,21 +107,20 @@ export default function EntrenadorDetalle() {
           <p className="text-red-500">Error al cargar el equipo del entrenador.</p>
         )}
         {teamCoach && teamCoach.equiposIds?.length > 0 ? (
-          <>
-            {teams && teams.length > 0 && teams.map((team) => (
-              <div
-                key={team.id}
-                className="mt-4 p-4 bg-gray-200 rounded-md shadow-md"
-              >
-                <div className="flex justify-between items-center">
-                  <h3 className="text-lg font-semibold text-gray-900">
-                    {team.nombre}
-                  </h3>
-                </div>
+          teams && teams.length > 0 &&
+          teams.map((team) => (
+            <div key={team.id} className="mt-4 p-4 bg-[var(--background2)] rounded-md shadow-md flex justify-between items-center">
+              <h3 className="text-lg font-semibold">{team.nombre}</h3>
+              <div className="flex w-16 justify-around flex-row">
+                <button title="Eliminar equipo" onClick={() => handleDeleteTeam(team.id)} className="text-red-500 hover:text-red-700 transition-all cursor-pointer">
+                  <TrashIcon className="h-5 w-5" />
+                </button>
+                <button title="Ver equipo" className="cursor-pointer">
+                  <ArrowRightIcon className="text-gray-600 transition-transform transform hover:translate-x-1 h-5 w-5" />
+                </button>
               </div>
-            ))}
-          </>
-
+            </div>
+          ))
         ) : (
           <p className="text-gray-600">No hay equipos disponibles.</p>
         )}
@@ -124,16 +129,16 @@ export default function EntrenadorDetalle() {
       {/* 🟢 Modal de CREAR EQUIPO */}
       {createTeamModal && (
         <div className="fixed inset-0 flex items-center justify-center bg-black/50 backdrop-blur-[2px] z-50">
-          <div className="bg-white p-6 rounded-lg shadow-lg max-w-md w-full relative">
+          <div className="bg-[var(--background)] p-6 rounded-lg shadow-lg max-w-md w-full relative">
             <button
-              className="absolute top-4 right-4 text-gray-600 hover:text-gray-900 bg-gray-200 rounded-full p-2"
+              className="absolute top-4 right-4 text-gray-600 hover:text-gray-900 bg-gray-200 rounded-full p-2 cursor-pointer"
               onClick={() => setCreateTeam(false)}
             >
-              ✖
+              <XMarkIcon className="h-6 w-6" />
             </button>
 
             {/* Título */}
-            <h2 className="text-xl font-bold text-gray-800 text-center">
+            <h2 className="text-xl font-bold text-[var(--foreground)] text-center">
               Crear Nuevo Equipo
             </h2>
 
@@ -147,7 +152,7 @@ export default function EntrenadorDetalle() {
             >
               {/* Input para el nombre del equipo */}
               <div>
-                <label className="block text-gray-700 font-medium">
+                <label className="block text-[var(--foreground)] font-medium">
                   Nombre del equipo:
                 </label>
                 <input
@@ -160,12 +165,11 @@ export default function EntrenadorDetalle() {
               </div>
 
               {/* Botón para guardar */}
-              <button
+              <Button
                 type="submit"
-                className="w-full px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 transition-all"
               >
                 Guardar Equipo
-              </button>
+              </Button>
             </form>
           </div>
         </div>
