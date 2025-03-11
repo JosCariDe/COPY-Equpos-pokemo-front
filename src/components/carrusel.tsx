@@ -38,7 +38,7 @@ export default function Carousel({ images }: { images: string[] }) {
         {images.map((_, index) => (
           <span
             key={index}
-            className={`w-3 h-3 mx-1! rounded-full bg-white transition ${
+            className={`w-3 h-3 mx-1! rounded-full bg-[var(--foreground)] transition ${
               index === currentIndex ? "opacity-100" : "opacity-50"
             }`}
           />

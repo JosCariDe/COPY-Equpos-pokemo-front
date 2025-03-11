@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { Trainer } from "../types/Trainer";
+import { Trainer } from "../types/Coach";
 
 interface GlobalState {
     Trainer: Trainer;

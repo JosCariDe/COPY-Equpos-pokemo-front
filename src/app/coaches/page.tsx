@@ -1,18 +1,10 @@
 "use client"
+import useTrainers from "@/components/hooks/useTrainers";
 import LoaderScreen from "@/components/Loaders/LoaderScreen";
 import TableReact from "@/components/table";
-import { TrainerServices } from "@/modules/services/TrainerServices";
-import { useQuery } from "@tanstack/react-query";
 
 const Page = () => {
-  const {
-    data: trainer,
-    isLoading,
-    error,
-  } = useQuery({
-    queryKey: ["trainer", "all"],
-    queryFn: TrainerServices.getAll,
-  });
+  const { data: trainer, isLoading, error } = useTrainers();
 
   if (isLoading) return <LoaderScreen />;
   
@@ -29,8 +21,6 @@ const Page = () => {
     <div className="h-full w-full">
       <TableReact
         data={trainer || []}
-        tableName="Entrenadores"
-        gestionTeams={true}
       />
     </div>
   );
