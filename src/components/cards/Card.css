@@ -6,8 +6,8 @@
     font-style: normal;
     text-align: right;
     color: var(--foreground);
-    width: 300px;
-    height: 400px;
+    width: 15.625rem;
+    height: 21.875rem;
     box-shadow: 0 1px 5px #00000099;
     border-radius: 10px;
     background-size: cover;
@@ -81,8 +81,9 @@
 
 .card-container {
     perspective: 1500px;
-    width: 300px;
-    height: 400px;
+    width: 15.625rem;
+    height: 21.875rem;
+    margin: 1rem;
 }
 
 .card:hover {

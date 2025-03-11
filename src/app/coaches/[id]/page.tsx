@@ -7,7 +7,7 @@ import { TeamCoach } from "@/modules/types/TeamCoach";
 import { ArrowRightIcon, XMarkIcon } from "@heroicons/react/16/solid";
 import { TrashIcon } from "@heroicons/react/16/solid";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 export default function EntrenadorDetalle() {
@@ -16,6 +16,7 @@ export default function EntrenadorDetalle() {
   const [nombreEquipo, setNombreEquipo] = useState("");
   const { id: entrenadorId } = useParams();
   const queryClient = useQueryClient();
+  const router = useRouter()
 
   const {
     data: teamCoach,
@@ -91,10 +92,6 @@ export default function EntrenadorDetalle() {
           >
             Crear nuevo equipo
           </Button>
-          <Button
-          >
-            Añadir Pokémon
-          </Button>
         </div>
 
 
@@ -115,7 +112,8 @@ export default function EntrenadorDetalle() {
                 <button title="Eliminar equipo" onClick={() => handleDeleteTeam(team.id)} className="text-red-500 hover:text-red-700 transition-all cursor-pointer">
                   <TrashIcon className="h-5 w-5" />
                 </button>
-                <button title="Ver equipo" className="cursor-pointer">
+                <button title="Ver equipo" className="cursor-pointer"
+                  onClick={() => router.push(`/manage-team/${team.id}`)}>
                   <ArrowRightIcon className="text-gray-600 transition-transform transform hover:translate-x-1 h-5 w-5" />
                 </button>
               </div>

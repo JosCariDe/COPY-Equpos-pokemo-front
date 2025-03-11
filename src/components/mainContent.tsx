@@ -29,7 +29,7 @@ export default function Layout({
       >
         <Header isOpen={isOpen} setIsOpen={setIsOpen} />
         {/* Page Content */}
-        <div className="p-4! overflow-auto h-[calc(100vh-4rem)] w-full">{children}</div>
+        <main className="p-4! overflow-auto h-[calc(100vh-4rem)] w-full">{children}</main>
       </div>
     </div>
   );

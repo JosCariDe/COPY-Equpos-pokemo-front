@@ -7,8 +7,8 @@ const Page = () => {
   const { data: trainer, isLoading, error } = useTrainers();
 
   if (isLoading) return <LoaderScreen />;
-  
-  if (error) 
+
+  if (error)
     return (
       <div className="flex items-center justify-center h-full">
         <p className="text-red-500 text-lg font-semibold">

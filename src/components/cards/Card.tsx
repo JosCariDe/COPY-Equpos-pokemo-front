@@ -1,20 +1,15 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import "./Card.css";
 import { Pokemon } from "@/modules/types/Pokemon";
-import { generateRandomColor } from "@/utils/Colors";
 import Image from "next/image";
 
 const HoloCard = ({ pokemon }: { pokemon: Pokemon }) => {
   const cardRef = useRef<HTMLDivElement>(null);
   const bounds = useRef<DOMRect>(null);
   const isHovering = useRef(false);
-  const [borderColor, setBorderColor] = useState<string>("#ffffff");
 
-  useEffect(() => {
-    setBorderColor(generateRandomColor({ type: "pastel" }));
-  }, []);
 
   useEffect(() => {
     const $card = cardRef.current;
@@ -81,12 +76,8 @@ const HoloCard = ({ pokemon }: { pokemon: Pokemon }) => {
   return (
     <div className="card-container">
       <div className="card" ref={cardRef}>
-        <div className="card-content"
-          style={{
-            borderWidth: 10,
-            borderColor: borderColor,
-          }}>
-          <div className="p-4">
+        <div className="card-content">
+          <div className="p-2">
             <div className="flex justify-between items-center">
               <h2 className="text-2xl font-bold">{pokemon.nombre}</h2>
               <span className="text-lg">HP {pokemon.estadisticas.hp}</span>
@@ -100,20 +91,16 @@ const HoloCard = ({ pokemon }: { pokemon: Pokemon }) => {
                 className="mx-auto"
               />
             </div>
-            <div className="mt-4">
+            <div className="mt-4 flex flex-col gap-1">
               <p className="text-sm"><strong>Tipos:</strong> {pokemon.tipos.join(", ")}</p>
-              <p className="text-sm"><strong>Nivel:</strong> {pokemon.nivel}</p>
-              <p className="text-sm"><strong>Ataque:</strong> {pokemon.estadisticas.ataque}</p>
-              <p className="text-sm"><strong>Defensa:</strong> {pokemon.estadisticas.defensa}</p>
-              <p className="text-sm"><strong>Velocidad:</strong> {pokemon.estadisticas.velocidad}</p>
-            </div>
-            <div className="mt-4">
-              <h3 className="text-lg font-semibold">Movimientos:</h3>
-              <ul className="list-disc list-inside">
-                {pokemon.movimientos.map((movimiento, index) => (
-                  <li key={index} className="text-sm">{movimiento}</li>
-                ))}
-              </ul>
+              <div className="flex justify-between flex-row">
+                <p className="text-sm"><strong>Ataque:</strong> {pokemon.estadisticas.ataque}</p>
+                <p className="text-sm"><strong>Nivel:</strong> {pokemon.nivel}</p>
+              </div>
+              <div className="flex justify-between flex-row">
+                <p className="text-sm"><strong>Defensa:</strong> {pokemon.estadisticas.defensa}</p>
+                <p className="text-sm"><strong>Velocidad:</strong> {pokemon.estadisticas.velocidad}</p>
+              </div>
             </div>
           </div>
         </div>

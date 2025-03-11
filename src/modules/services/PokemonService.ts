@@ -7,7 +7,7 @@ const url = `${Config.BACKEND_SERVICE_URL}/api/pokemon`;
 export class PokemonService {
     static async getAll(): Promise<Pokemon[]> {
         const response = await axios.get(url);
-        return response.data;
+        return response.data.pokemones;
     }
 
     static async getOne(id: number): Promise<Pokemon> {
