@@ -41,7 +41,7 @@ export default function EntrenadorDetalle() {
     isLoading: isLoadingTeams,
     error: errorLoadingTeams,
   } = useQuery({
-    queryKey: ["Teams", entrenadorId, teamCoach?.equiposIds],
+    queryKey: ["Teams", entrenadorId, teamCoach],
     queryFn: () => getAllTeams(teamCoach),
     enabled: !!teamCoach,
   });
@@ -59,6 +59,16 @@ export default function EntrenadorDetalle() {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isLoadingEquipoEntrenador]);
+
+  const handleSelectTeam = async (equipoId: string) => {
+    if (!teamCoach) return
+    await EquipoEntrenadorService.updateEquipoEntrenador(teamCoach?.id as string, {
+      entrenadorId: parseInt(entrenadorId as string),
+      equiposIds: teamCoach?.equiposIds as string[],
+      equipoSeleccionado: equipoId,
+    })
+    queryClient.invalidateQueries({ queryKey: ["teamCoach", entrenadorId] });
+  };
 
   const onSubmitTeam = async () => {
     await TeamsServices.createTeam({
@@ -107,21 +117,29 @@ export default function EntrenadorDetalle() {
         {teamCoach && teamCoach.equiposIds?.length > 0 ? (
           teams && teams.length > 0 &&
           teams.map((team) => (
-            <div key={team.id} className="mt-4 p-4 bg-[var(--background2)] rounded-md shadow-md flex justify-between items-center">
+            <div key={team.id} className="mt-4 p-4 bg-[var(--background2)] rounded-md shadow-md flex justify-between items-center h-16">
               <h3 className="text-lg font-semibold">{team.nombre}</h3>
-              <div className="flex w-16 justify-around flex-row">
+              <div className="flex min-w-16 justify-around flex-row gap-3">
+                {teamCoach.equipoSeleccionado === team.id ? (
+                  <span className="border-[1px] border-green-500 rounded-md p-2" >Equipo seleccionado</span>
+                ) :
+                  (
+                    <Button onClick={() => handleSelectTeam(team.id)}>
+                      Seleccionar
+                    </Button>
+                  )}
                 <button title="Eliminar equipo" onClick={() => handleDeleteTeam(team.id)} className="text-red-500 hover:text-red-700 transition-all cursor-pointer">
                   <TrashIcon className="h-5 w-5" />
                 </button>
                 <button title="Ver equipo" className="cursor-pointer"
                   onClick={() => router.push(`/manage-team/${team.id}`)}>
-                  <ArrowRightIcon className="text-gray-600 transition-transform transform hover:translate-x-1 h-5 w-5" />
+                  <ArrowRightIcon className="text-[var(--foreground2)] transition-transform transform hover:translate-x-1 h-5 w-5" />
                 </button>
               </div>
             </div>
           ))
         ) : (
-          <p className="text-gray-600">No hay equipos disponibles.</p>
+          <p className="text-[var(--foreground2)]">No hay equipos disponibles.</p>
         )}
       </div>
 
