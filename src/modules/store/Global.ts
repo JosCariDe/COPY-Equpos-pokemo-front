@@ -1,12 +1,12 @@
 import { create } from "zustand";
-import { Trainer } from "../types/Coach";
+import { Entrenador } from "../types/Coach";
 
 interface GlobalState {
-    Trainer: Trainer;
-    setTrainer: (Trainer: Trainer) => void;
+    Trainer: Entrenador;
+    setTrainer: (Trainer: Entrenador) => void;
 }
 
 export const usePokemonStore = create<GlobalState>((set) => ({
-    Trainer: {} as Trainer,
-    setTrainer: (Trainer: Trainer) => set({ Trainer }),
+    Trainer: {} as Entrenador,
+    setTrainer: (Trainer: Entrenador) => set({ Trainer }),
 }));
