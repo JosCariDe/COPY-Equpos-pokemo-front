@@ -17,10 +17,10 @@ const TableReact = ({
   const router = useRouter();
   const headers = [
     { label: "ID", access: "id" },
-    { label: "Nombre", access: "first_name" },
-    { label: "Apellido", access: "last_name" },
+    { label: "Nombre", access: "firstName" },
+    { label: "Apellido", access: "lastName" },
     { label: "Email", access: "email" },
-    { label: "Fecha de Nacimiento", access: "birth_date" },
+    { label: "Fecha de Nacimiento", access: "birthDate" },
   ]
   const [currentPage, setCurrentPage] = useState(0);
   const totalPage = Math.ceil(data.length / TABLE_MAX_ROWS);
